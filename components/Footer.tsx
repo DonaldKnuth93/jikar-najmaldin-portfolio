@@ -1,18 +1,24 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Typography, Divider, useTheme, IconButton, Tooltip } from '@mui/material';
-import { LinkedIn, Twitter, GitHub, FavoriteBorder } from '@mui/icons-material';
+import { Box, Container, Typography, IconButton, Tooltip, useTheme } from '@mui/material';
+import { LinkedIn, Twitter, GitHub } from '@mui/icons-material';
 
-const socialLinks = [
-  { label: 'LinkedIn', icon: <LinkedIn fontSize="small" />, href: 'https://linkedin.com/in/jikarnajmaldin' },
-  { label: 'Twitter', icon: <Twitter fontSize="small" />, href: 'https://twitter.com/jikarnajm' },
-  { label: 'GitHub', icon: <GitHub fontSize="small" />, href: 'https://github.com/jikarnajm' },
+const NAV = ['About', 'Ventures', 'Skills', 'Contact'];
+
+const SOCIALS = [
+  { label: 'LinkedIn', Icon: LinkedIn, href: 'https://linkedin.com/in/jikarnajmaldin' },
+  { label: 'Twitter', Icon: Twitter, href: 'https://twitter.com/jikarnajm' },
+  { label: 'GitHub', Icon: GitHub, href: 'https://github.com/jikarnajm' },
 ];
 
 export default function Footer() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+
+  const handleNavClick = (section: string) => {
+    document.querySelector(`#${section.toLowerCase()}`)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <Box
@@ -21,8 +27,6 @@ export default function Footer() {
         py: 5,
         borderTop: '1px solid',
         borderColor: 'divider',
-        position: 'relative',
-        overflow: 'hidden',
       }}
     >
       <Container maxWidth="xl">
@@ -35,50 +39,61 @@ export default function Footer() {
             gap: 3,
           }}
         >
-          {/* Left */}
-          <Box>
-            <Box display="flex" alignItems="center" gap={1} mb={1}>
-              <Box
-                sx={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: '8px',
-                  background: 'linear-gradient(135deg, #818CF8, #22D3EE)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography sx={{ fontWeight: 800, fontSize: '0.7rem', color: '#fff' }}>JN</Typography>
-              </Box>
-              <Typography fontWeight={700} fontSize="0.9375rem">
-                Jikar Najmaldin
+          {/* Left: brand */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box
+              sx={{
+                width: 30,
+                height: 30,
+                borderRadius: '9px',
+                background: 'linear-gradient(135deg, #818CF8, #22D3EE)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography sx={{ fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>
+                JN
               </Typography>
             </Box>
-            <Typography variant="caption" color="text.secondary">
-              © {new Date().getFullYear()} · All rights reserved.
-            </Typography>
+            <Box>
+              <Typography sx={{ fontWeight: 700, fontSize: '0.875rem', color: 'text.primary' }}>
+                Jikar Najmaldin
+              </Typography>
+              <Typography sx={{ fontSize: '0.75rem', color: 'text.secondary', opacity: 0.6 }}>
+                © {new Date().getFullYear()} · All rights reserved
+              </Typography>
+            </Box>
           </Box>
 
-          {/* Center */}
-          <Typography
-            variant="caption"
-            color="text.secondary"
+          {/* Center: nav links */}
+          <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5,
-              opacity: 0.6,
+              display: { xs: 'none', md: 'flex' },
+              gap: 3,
             }}
           >
-            Built with{' '}
-            <FavoriteBorder sx={{ fontSize: '0.85rem', color: '#F472B6' }} />
-            {' '}and Next.js
-          </Typography>
+            {NAV.map((item) => (
+              <Typography
+                key={item}
+                onClick={() => handleNavClick(item)}
+                sx={{
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  color: 'text.secondary',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s',
+                  '&:hover': { color: 'text.primary' },
+                }}
+              >
+                {item}
+              </Typography>
+            ))}
+          </Box>
 
-          {/* Right: social */}
-          <Box display="flex" gap={1}>
-            {socialLinks.map((s) => (
+          {/* Right: socials */}
+          <Box sx={{ display: 'flex', gap: 0.75 }}>
+            {SOCIALS.map((s) => (
               <Tooltip key={s.label} title={s.label}>
                 <IconButton
                   component="a"
@@ -89,18 +104,18 @@ export default function Footer() {
                   sx={{
                     color: 'text.secondary',
                     border: '1px solid',
-                    borderColor: 'divider',
+                    borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
                     borderRadius: '10px',
-                    p: '6px',
-                    '&:hover': {
-                      color: 'primary.main',
-                      borderColor: 'primary.main',
-                      background: isDark ? 'rgba(129,140,248,0.08)' : 'rgba(79,70,229,0.06)',
-                    },
+                    p: '7px',
                     transition: 'all 0.2s',
+                    '&:hover': {
+                      color: 'text.primary',
+                      borderColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+                      background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                    },
                   }}
                 >
-                  {s.icon}
+                  <s.Icon sx={{ fontSize: '0.95rem' }} />
                 </IconButton>
               </Tooltip>
             ))}

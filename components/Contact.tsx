@@ -8,45 +8,17 @@ import {
   Grid,
   TextField,
   Button,
-  Paper,
   useTheme,
   Snackbar,
   Alert,
   IconButton,
   Tooltip,
-  Stack,
 } from '@mui/material';
-import {
-  Email,
-  LinkedIn,
-  Twitter,
-  GitHub,
-  Send,
-  ContentCopy,
-  CheckCircle,
-} from '@mui/icons-material';
+import { Send, ContentCopy, CheckCircle, LinkedIn, Twitter, GitHub } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
-const socialLinks = [
-  {
-    label: 'LinkedIn',
-    icon: <LinkedIn />,
-    href: 'https://linkedin.com/in/jikarnajmaldin',
-    color: '#0A66C2',
-  },
-  {
-    label: 'Twitter / X',
-    icon: <Twitter />,
-    href: 'https://twitter.com/jikarnajm',
-    color: '#1DA1F2',
-  },
-  {
-    label: 'GitHub',
-    icon: <GitHub />,
-    href: 'https://github.com/jikarnajm',
-    color: '#6e5494',
-  },
-];
+const EMAIL = 'hello@jikarnajm.com';
+
 
 export default function Contact() {
   const theme = useTheme();
@@ -55,42 +27,69 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const email = 'hello@jikarnajm.com';
+  const gradientStyle = {
+    background: isDark
+      ? 'linear-gradient(135deg, #818CF8 0%, #22D3EE 100%)'
+      : 'linear-gradient(135deg, #6366F1 0%, #0891B2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(email);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(EMAIL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoUrl = `mailto:${email}?subject=Hello from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom: ${encodeURIComponent(form.email)}`;
-    window.open(mailtoUrl, '_blank');
+    const url = `mailto:${EMAIL}?subject=Hello from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom: ${encodeURIComponent(form.email)}`;
+    window.open(url, '_blank');
     setSent(true);
     setForm({ name: '', email: '', message: '' });
+  };
+
+  const inputSx = {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '10px',
+      background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+      '& fieldset': {
+        borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
+      },
+      '&:hover fieldset': {
+        borderColor: isDark ? 'rgba(129,140,248,0.4)' : 'rgba(79,70,229,0.3)',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: isDark ? '#818CF8' : '#4F46E5',
+        borderWidth: 1,
+      },
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: isDark ? '#818CF8' : '#4F46E5',
+    },
   };
 
   return (
     <Box
       component="section"
       id="contact"
-      sx={{ py: { xs: 10, md: 16 }, position: 'relative', overflow: 'hidden' }}
+      sx={{ py: { xs: 12, md: 18 }, position: 'relative', overflow: 'hidden' }}
     >
       {/* Background */}
       <Box
         sx={{
           position: 'absolute',
-          bottom: 0,
+          bottom: '-10%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: 800,
-          height: 400,
+          width: 900,
+          height: 500,
           borderRadius: '50%',
           background: isDark
-            ? 'radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%)'
-            : 'radial-gradient(ellipse, rgba(79,70,229,0.06) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+            ? 'radial-gradient(ellipse, rgba(99,102,241,0.09) 0%, transparent 65%)'
+            : 'radial-gradient(ellipse, rgba(79,70,229,0.05) 0%, transparent 65%)',
+          filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
       />
@@ -98,179 +97,171 @@ export default function Contact() {
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6 }}
         >
-          <Box sx={{ mb: { xs: 6, md: 10 }, maxWidth: 600 }}>
-            <Typography
-              variant="overline"
-              sx={{
-                color: 'primary.main',
-                fontWeight: 700,
-                letterSpacing: '0.15em',
-                fontSize: '0.75rem',
-                mb: 2,
-                display: 'block',
-              }}
-            >
-              Get in touch
-            </Typography>
-            <Typography variant="h2" sx={{ mb: 2.5 }}>
+          <Box sx={{ mb: { xs: 7, md: 11 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+              <Typography
+                sx={{
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: isDark ? 'rgba(129,140,248,0.7)' : 'rgba(79,70,229,0.7)',
+                }}
+              >
+                Contact
+              </Typography>
+              <Box sx={{ height: '1px', bgcolor: 'divider', width: 60 }} />
+            </Box>
+            <Typography variant="h2" sx={{ color: 'text.primary', maxWidth: 640 }}>
               Let's build{' '}
-              <Box component="span" className="gradient-text">
-                something great
+              <Box component="span" sx={gradientStyle}>
+                something great.
               </Box>
-            </Typography>
-            <Typography variant="body1" color="text.secondary" lineHeight={1.8}>
-              Have a project in mind, want to partner, or just want to say hello?
-              I'm always open to interesting conversations.
             </Typography>
           </Box>
         </motion.div>
 
         <Grid container spacing={6} alignItems="flex-start">
-          {/* Left: contact info */}
+          {/* Left: Info */}
           <Grid size={{ xs: 12, md: 4 }}>
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Email card */}
-              <Paper
-                elevation={0}
+              <Typography
+                sx={{ fontSize: '1rem', color: 'text.secondary', lineHeight: 1.75, mb: 5 }}
+              >
+                Have a project, a partnership, or just want to connect? I'm always open to
+                interesting conversations.
+              </Typography>
+
+              {/* Email */}
+              <Box
                 sx={{
-                  p: 3,
-                  mb: 3,
+                  p: 2.5,
+                  borderRadius: '14px',
                   border: '1px solid',
                   borderColor: 'divider',
-                  borderRadius: 3,
-                  background: isDark ? 'rgba(13,13,22,0.6)' : 'rgba(255,255,255,0.8)',
-                  backdropFilter: 'blur(10px)',
+                  background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                  mb: 3,
                 }}
               >
-                <Box display="flex" alignItems="center" gap={1.5} mb={1.5}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '12px',
-                      background: 'linear-gradient(135deg, rgba(129,140,248,0.15), rgba(34,211,238,0.15))',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'primary.main',
-                    }}
-                  >
-                    <Email fontSize="small" />
-                  </Box>
-                  <Typography fontWeight={600}>Email me directly</Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  I typically respond within 24 hours.
-                </Typography>
-                <Box
+                <Typography
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    p: 1.5,
-                    borderRadius: 2,
-                    background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-                    border: '1px solid',
-                    borderColor: 'divider',
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    mb: 1.5,
+                    opacity: 0.6,
                   }}
                 >
-                  <Typography variant="body2" fontWeight={500} color="primary.main">
-                    {email}
+                  Email
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '0.9375rem',
+                      color: isDark ? '#A5B4FC' : '#4F46E5',
+                    }}
+                  >
+                    {EMAIL}
                   </Typography>
-                  <Tooltip title={copied ? 'Copied!' : 'Copy email'}>
+                  <Tooltip title={copied ? 'Copied!' : 'Copy'}>
                     <IconButton
                       size="small"
-                      onClick={handleCopyEmail}
-                      sx={{ color: copied ? 'success.main' : 'text.secondary' }}
+                      onClick={handleCopy}
+                      sx={{
+                        color: copied ? '#22C55E' : 'text.secondary',
+                        '&:hover': { color: isDark ? '#818CF8' : '#4F46E5' },
+                      }}
                     >
-                      {copied ? <CheckCircle fontSize="small" /> : <ContentCopy fontSize="small" />}
+                      {copied ? (
+                        <CheckCircle sx={{ fontSize: '1rem' }} />
+                      ) : (
+                        <ContentCopy sx={{ fontSize: '1rem' }} />
+                      )}
                     </IconButton>
                   </Tooltip>
                 </Box>
-              </Paper>
+              </Box>
 
               {/* Social links */}
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 3,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: 3,
-                  background: isDark ? 'rgba(13,13,22,0.6)' : 'rgba(255,255,255,0.8)',
-                  backdropFilter: 'blur(10px)',
-                }}
-              >
-                <Typography fontWeight={600} mb={2}>
-                  Find me online
-                </Typography>
-                <Stack spacing={1.5}>
-                  {socialLinks.map((social) => (
-                    <Box
-                      key={social.label}
-                      component="a"
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1.5,
-                        p: 1.5,
-                        borderRadius: 2,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        textDecoration: 'none',
-                        transition: 'all 0.2s ease',
-                        color: 'text.primary',
-                        '&:hover': {
-                          borderColor: social.color + '60',
-                          background: social.color + '10',
-                          transform: 'translateX(4px)',
-                          color: social.color,
-                        },
-                      }}
-                    >
-                      <Box sx={{ color: 'inherit', display: 'flex' }}>{social.icon}</Box>
-                      <Typography variant="body2" fontWeight={500}>
-                        {social.label}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {[
+                  { label: 'LinkedIn', handle: '/in/jikarnajmaldin', href: 'https://linkedin.com/in/jikarnajmaldin', Icon: LinkedIn, color: '#0A66C2' },
+                  { label: 'Twitter / X', handle: '@jikarnajm', href: 'https://twitter.com/jikarnajm', Icon: Twitter, color: '#1DA1F2' },
+                  { label: 'GitHub', handle: 'jikarnajm', href: 'https://github.com/jikarnajm', Icon: GitHub, color: isDark ? '#E2E8F0' : '#24292F' },
+                ].map((s) => (
+                  <Box
+                    key={s.label}
+                    component="a"
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 2,
+                      p: 1.75,
+                      borderRadius: '12px',
+                      border: '1px solid',
+                      borderColor: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)',
+                      textDecoration: 'none',
+                      color: 'text.secondary',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        borderColor: s.color + '50',
+                        color: s.color,
+                        background: s.color + '0a',
+                        transform: 'translateX(4px)',
+                      },
+                    }}
+                  >
+                    <s.Icon sx={{ fontSize: '1.1rem' }} />
+                    <Box>
+                      <Typography sx={{ fontSize: '0.8125rem', fontWeight: 600, color: 'text.primary', lineHeight: 1.2 }}>
+                        {s.label}
+                      </Typography>
+                      <Typography sx={{ fontSize: '0.72rem', color: 'text.secondary' }}>
+                        {s.handle}
                       </Typography>
                     </Box>
-                  ))}
-                </Stack>
-              </Paper>
+                  </Box>
+                ))}
+              </Box>
             </motion.div>
           </Grid>
 
           {/* Right: Form */}
           <Grid size={{ xs: 12, md: 8 }}>
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Paper
-                elevation={0}
+              <Box
                 component="form"
                 onSubmit={handleSubmit}
                 sx={{
-                  p: { xs: 3, md: 5 },
+                  p: { xs: 3.5, md: 5 },
+                  borderRadius: '20px',
                   border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: 4,
-                  background: isDark ? 'rgba(13,13,22,0.6)' : 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(20px)',
+                  borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+                  background: isDark ? '#0B0B14' : '#FFFFFF',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 3,
                 }}
               >
                 <Grid container spacing={3}>
@@ -281,14 +272,7 @@ export default function Contact() {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       required
-                      variant="outlined"
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: 2.5,
-                          '& fieldset': { borderColor: 'divider' },
-                          '&:hover fieldset': { borderColor: 'primary.main' },
-                        },
-                      }}
+                      sx={inputSx}
                     />
                   </Grid>
                   <Grid size={{ xs: 12, sm: 6 }}>
@@ -299,14 +283,7 @@ export default function Contact() {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       required
-                      variant="outlined"
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: 2.5,
-                          '& fieldset': { borderColor: 'divider' },
-                          '&:hover fieldset': { borderColor: 'primary.main' },
-                        },
-                      }}
+                      sx={inputSx}
                     />
                   </Grid>
                   <Grid size={{ xs: 12 }}>
@@ -318,15 +295,8 @@ export default function Contact() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       required
-                      variant="outlined"
                       placeholder="Tell me about your project, idea, or just say hello..."
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: 2.5,
-                          '& fieldset': { borderColor: 'divider' },
-                          '&:hover fieldset': { borderColor: 'primary.main' },
-                        },
-                      }}
+                      sx={inputSx}
                     />
                   </Grid>
                   <Grid size={{ xs: 12 }}>
@@ -334,18 +304,15 @@ export default function Contact() {
                       type="submit"
                       variant="contained"
                       size="large"
-                      endIcon={<Send />}
+                      endIcon={<Send sx={{ fontSize: '0.9rem' }} />}
                       fullWidth
-                      sx={{
-                        py: 1.75,
-                        fontSize: '1rem',
-                      }}
+                      sx={{ py: 1.75, fontSize: '0.9375rem' }}
                     >
                       Send message
                     </Button>
                   </Grid>
                 </Grid>
-              </Paper>
+              </Box>
             </motion.div>
           </Grid>
         </Grid>
@@ -357,8 +324,12 @@ export default function Contact() {
         onClose={() => setSent(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity="success" onClose={() => setSent(false)} sx={{ borderRadius: 2 }}>
-          Message sent! I'll get back to you soon.
+        <Alert
+          severity="success"
+          onClose={() => setSent(false)}
+          sx={{ borderRadius: '12px' }}
+        >
+          Message sent — I'll get back to you soon.
         </Alert>
       </Snackbar>
     </Box>

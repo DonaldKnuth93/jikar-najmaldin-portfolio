@@ -1,109 +1,113 @@
 'use client';
 
 import React from 'react';
+import { Box, Container, Typography, Grid, useTheme } from '@mui/material';
 import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Paper,
-  useTheme,
-  LinearProgress,
-  linearProgressClasses,
-  styled,
-} from '@mui/material';
+  RocketLaunch,
+  TrendingUp,
+  AccountBalance,
+  Code,
+} from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
-const StyledProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 6,
-  borderRadius: 4,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 4,
-    backgroundImage: 'linear-gradient(135deg, #818CF8, #22D3EE)',
-  },
-}));
-
-const skillCategories = [
+const CAPABILITIES = [
   {
+    icon: RocketLaunch,
     title: 'Entrepreneurship',
-    icon: '🚀',
+    color: '#818CF8',
     skills: [
-      { name: 'Product Strategy', level: 95 },
-      { name: 'Business Development', level: 92 },
-      { name: 'Fundraising', level: 85 },
-      { name: 'Go-to-Market', level: 90 },
+      'Product Strategy',
+      'Business Development',
+      'Go-to-Market',
+      'Fundraising',
+      'Startup Scaling',
     ],
   },
   {
+    icon: Code,
     title: 'Technology',
-    icon: '💻',
+    color: '#22D3EE',
     skills: [
-      { name: 'Product Architecture', level: 88 },
-      { name: 'Tech Leadership', level: 85 },
-      { name: 'Web Platforms', level: 80 },
-      { name: 'AI & Automation', level: 78 },
+      'Platform Architecture',
+      'Tech Leadership',
+      'AI & Automation',
+      'Web Platforms',
+      'Product Engineering',
     ],
   },
   {
+    icon: TrendingUp,
     title: 'Growth & Marketing',
-    icon: '📈',
+    color: '#F59E0B',
     skills: [
-      { name: 'Growth Hacking', level: 90 },
-      { name: 'Digital Marketing', level: 87 },
-      { name: 'Brand Building', level: 88 },
-      { name: 'Community Building', level: 85 },
+      'Growth Hacking',
+      'Digital Marketing',
+      'Brand Building',
+      'Community Building',
+      'User Acquisition',
     ],
   },
   {
-    title: 'Finance & Operations',
-    icon: '💼',
+    icon: AccountBalance,
+    title: 'Finance & Ops',
+    color: '#34D399',
     skills: [
-      { name: 'Financial Modeling', level: 82 },
-      { name: 'Operations', level: 88 },
-      { name: 'Investor Relations', level: 80 },
-      { name: 'Team Building', level: 92 },
+      'Financial Modeling',
+      'Operations',
+      'Investor Relations',
+      'Team Building',
+      'InsurTech',
     ],
   },
 ];
 
-const expertise = [
-  { label: 'B2B Platforms', color: '#818CF8' },
-  { label: 'Marketplace Design', color: '#A78BFA' },
-  { label: 'InsurTech', color: '#22D3EE' },
-  { label: 'Business Matchmaking', color: '#0EA5E9' },
-  { label: 'Investment Platforms', color: '#818CF8' },
-  { label: 'Product-Led Growth', color: '#F59E0B' },
-  { label: 'Swiss Market', color: '#34D399' },
-  { label: 'Cross-Border Business', color: '#F472B6' },
-  { label: 'Digital Transformation', color: '#818CF8' },
-  { label: 'Startup Scaling', color: '#22D3EE' },
+const DOMAINS = [
+  'B2B Platforms',
+  'Marketplace Design',
+  'InsurTech',
+  'Business Matchmaking',
+  'Investment Platforms',
+  'Product-Led Growth',
+  'Swiss Market',
+  'Cross-Border Business',
+  'Digital Transformation',
+  'Startup Scaling',
+  'SaaS',
+  'Fintech',
 ];
 
 export default function Skills() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
+  const gradientStyle = {
+    background: isDark
+      ? 'linear-gradient(135deg, #818CF8 0%, #22D3EE 100%)'
+      : 'linear-gradient(135deg, #6366F1 0%, #0891B2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  };
+
   return (
     <Box
       component="section"
       id="skills"
-      sx={{ py: { xs: 10, md: 16 }, position: 'relative', overflow: 'hidden' }}
+      sx={{ py: { xs: 12, md: 18 }, position: 'relative', overflow: 'hidden' }}
     >
+      {/* Background accent */}
       <Box
         sx={{
           position: 'absolute',
-          top: '30%',
-          left: '-10%',
-          width: 500,
-          height: 500,
+          top: '20%',
+          left: '-8%',
+          width: 600,
+          height: 600,
           borderRadius: '50%',
           background: isDark
-            ? 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(79,70,229,0.05) 0%, transparent 70%)',
-          filter: 'blur(80px)',
+            ? 'radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(79,70,229,0.04) 0%, transparent 70%)',
+          filter: 'blur(100px)',
           pointerEvents: 'none',
         }}
       />
@@ -111,153 +115,197 @@ export default function Skills() {
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6 }}
         >
-          <Box sx={{ mb: { xs: 6, md: 10 }, maxWidth: 600 }}>
-            <Typography
-              variant="overline"
-              sx={{
-                color: 'primary.main',
-                fontWeight: 700,
-                letterSpacing: '0.15em',
-                fontSize: '0.75rem',
-                mb: 2,
-                display: 'block',
-              }}
-            >
-              Expertise
-            </Typography>
-            <Typography variant="h2" sx={{ mb: 2.5 }}>
-              Skills &{' '}
-              <Box component="span" className="gradient-text">
-                capabilities
+          <Box sx={{ mb: { xs: 7, md: 11 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+              <Typography
+                sx={{
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: isDark ? 'rgba(129,140,248,0.7)' : 'rgba(79,70,229,0.7)',
+                }}
+              >
+                Capabilities
+              </Typography>
+              <Box sx={{ height: '1px', bgcolor: 'divider', width: 60 }} />
+            </Box>
+            <Typography variant="h2" sx={{ color: 'text.primary', maxWidth: 580 }}>
+              What I bring to{' '}
+              <Box component="span" sx={gradientStyle}>
+                every venture.
               </Box>
-            </Typography>
-            <Typography variant="body1" color="text.secondary" lineHeight={1.8}>
-              A decade of building, failing, learning, and shipping. These are the core competencies
-              I bring to every venture.
             </Typography>
           </Box>
         </motion.div>
 
-        {/* Skill categories */}
-        <Grid container spacing={3} sx={{ mb: 8 }}>
-          {skillCategories.map((cat, catIdx) => (
-            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={cat.title}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: catIdx * 0.1 }}
-                style={{ height: '100%' }}
-              >
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 3.5,
-                    height: '100%',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    borderRadius: 3,
-                    background: isDark ? 'rgba(13,13,22,0.6)' : 'rgba(255,255,255,0.8)',
-                    backdropFilter: 'blur(10px)',
-                    transition: 'border-color 0.3s',
-                    '&:hover': { borderColor: 'primary.main' },
-                  }}
+        {/* Capability cards */}
+        <Grid container spacing={2.5} sx={{ mb: 10 }}>
+          {CAPABILITIES.map((cap, i) => {
+            const Icon = cap.icon;
+            return (
+              <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={cap.title}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ height: '100%' }}
                 >
-                  <Box display="flex" alignItems="center" gap={1.5} mb={3}>
-                    <Typography fontSize="1.5rem">{cat.icon}</Typography>
-                    <Typography variant="h6" fontWeight={700}>
-                      {cat.title}
+                  <Box
+                    sx={{
+                      height: '100%',
+                      p: 3.5,
+                      borderRadius: '18px',
+                      border: '1px solid',
+                      borderColor: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)',
+                      background: isDark ? 'rgba(11,11,20,0.8)' : '#FFFFFF',
+                      backdropFilter: 'blur(10px)',
+                      transition: 'all 0.3s ease',
+                      cursor: 'default',
+                      '&:hover': {
+                        borderColor: cap.color + '50',
+                        transform: 'translateY(-4px)',
+                        boxShadow: isDark
+                          ? `0 20px 50px ${cap.color}14`
+                          : `0 16px 40px ${cap.color}0e`,
+                      },
+                    }}
+                  >
+                    {/* Icon */}
+                    <Box
+                      sx={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: '12px',
+                        background: `${cap.color}18`,
+                        border: `1px solid ${cap.color}30`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 3,
+                        color: cap.color,
+                      }}
+                    >
+                      <Icon sx={{ fontSize: '1.25rem' }} />
+                    </Box>
+
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: '0.9375rem',
+                        mb: 2.5,
+                        color: 'text.primary',
+                      }}
+                    >
+                      {cap.title}
                     </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-                    {cat.skills.map((skill, skillIdx) => (
-                      <Box key={skill.name}>
-                        <Box display="flex" justifyContent="space-between" mb={0.75}>
-                          <Typography variant="body2" fontWeight={500}>
-                            {skill.name}
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary" fontWeight={600}>
-                            {skill.level}%
+
+                    {/* Skill tags */}
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+                      {cap.skills.map((skill) => (
+                        <Box
+                          key={skill}
+                          sx={{
+                            px: 1.5,
+                            py: 0.5,
+                            borderRadius: '8px',
+                            background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
+                            border: '1px solid',
+                            borderColor: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)',
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: '0.75rem',
+                              fontWeight: 500,
+                              color: 'text.secondary',
+                              lineHeight: 1,
+                            }}
+                          >
+                            {skill}
                           </Typography>
                         </Box>
-                        <motion.div
-                          initial={{ scaleX: 0, originX: 0 }}
-                          whileInView={{ scaleX: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.8, delay: catIdx * 0.1 + skillIdx * 0.05 }}
-                          style={{ originX: 0 }}
-                        >
-                          <StyledProgress variant="determinate" value={skill.level} />
-                        </motion.div>
-                      </Box>
-                    ))}
+                      ))}
+                    </Box>
                   </Box>
-                </Paper>
-              </motion.div>
-            </Grid>
-          ))}
+                </motion.div>
+              </Grid>
+            );
+          })}
         </Grid>
 
-        {/* Expertise tags */}
+        {/* Domain expertise */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
-          <Typography
-            variant="overline"
+          <Box
             sx={{
-              color: 'text.secondary',
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              fontSize: '0.7rem',
-              mb: 3,
-              display: 'block',
+              pt: 7,
+              borderTop: '1px solid',
+              borderColor: 'divider',
             }}
           >
-            Domain expertise
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
-            {expertise.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
-              >
-                <Box
-                  sx={{
-                    px: 2.5,
-                    py: 1,
-                    borderRadius: '100px',
-                    border: '1px solid',
-                    borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)',
-                    background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
-                    cursor: 'default',
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      borderColor: item.color + '60',
-                      background: item.color + '10',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
+            <Typography
+              sx={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'text.secondary',
+                opacity: 0.6,
+                mb: 4,
+              }}
+            >
+              Domain expertise
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+              {DOMAINS.map((domain, i) => (
+                <motion.div
+                  key={domain}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.035 }}
                 >
-                  <Typography
-                    variant="caption"
-                    sx={{ fontWeight: 600, color: 'text.secondary', fontSize: '0.8125rem' }}
+                  <Box
+                    sx={{
+                      px: 2.5,
+                      py: 1,
+                      borderRadius: '100px',
+                      border: '1px solid',
+                      borderColor: isDark ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.09)',
+                      background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                      transition: 'all 0.2s ease',
+                      cursor: 'default',
+                      '&:hover': {
+                        borderColor: isDark ? 'rgba(129,140,248,0.4)' : 'rgba(79,70,229,0.3)',
+                        background: isDark ? 'rgba(129,140,248,0.06)' : 'rgba(79,70,229,0.04)',
+                        transform: 'translateY(-2px)',
+                      },
+                    }}
                   >
-                    {item.label}
-                  </Typography>
-                </Box>
-              </motion.div>
-            ))}
+                    <Typography
+                      sx={{
+                        fontSize: '0.8125rem',
+                        fontWeight: 500,
+                        color: 'text.secondary',
+                      }}
+                    >
+                      {domain}
+                    </Typography>
+                  </Box>
+                </motion.div>
+              ))}
+            </Box>
           </Box>
         </motion.div>
       </Container>
