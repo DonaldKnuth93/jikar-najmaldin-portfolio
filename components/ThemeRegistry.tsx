@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useMemo, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useServerInsertedHTML } from 'next/navigation';
@@ -23,7 +23,6 @@ export const useColorMode = () => useContext(ColorModeContext);
 function EmotionCacheProvider({ children }: { children: React.ReactNode }) {
   const [{ cache, flush }] = useState(() => {
     const cache = createCache({ key: 'mui-style', prepend: true });
-    cache.compat = true;
     const prevInsert = cache.insert.bind(cache);
     let inserted: string[] = [];
     cache.insert = (...args) => {
@@ -62,7 +61,6 @@ function EmotionCacheProvider({ children }: { children: React.ReactNode }) {
 
 export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState<'dark' | 'light'>('dark');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('colorMode') as 'dark' | 'light' | null;
@@ -72,7 +70,6 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setMode(prefersDark ? 'dark' : 'light');
     }
-    setMounted(true);
   }, []);
 
   const colorMode = useMemo(

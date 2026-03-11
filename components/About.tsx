@@ -1,39 +1,22 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Typography, Grid, useTheme } from '@mui/material';
+import { Box, Container, Typography, Grid, Button, useTheme } from '@mui/material';
+import { ArrowForward } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
-const FACTS = [
-  { label: 'Based in', value: 'Europe' },
-  { label: 'Focus', value: 'B2B & Fintech' },
-  { label: 'Building since', value: '2020' },
-  { label: 'Markets', value: 'Global & CH' },
-];
-
-const PILLARS = [
-  {
-    number: '01',
-    title: 'Ship fast. Learn faster.',
-    desc: 'Every product starts with a problem worth solving. I believe in moving quickly, shipping early, and iterating relentlessly based on real feedback.',
-  },
-  {
-    number: '02',
-    title: 'People are everything.',
-    desc: 'Great products are built by great teams, for real people. Human connection — between founders, users, and communities — is the core of every venture I build.',
-  },
-  {
-    number: '03',
-    title: 'Think global from day one.',
-    desc: 'I build for borders that don\'t exist. Whether it\'s business matchmaking or insurance tech, the products I create are designed to scale across markets.',
-  },
+const STATS = [
+  { value: '2+', label: 'Ventures launched' },
+  { value: '10K+', label: 'Users across platforms' },
+  { value: '30+', label: 'Countries reached' },
+  { value: '4+', label: 'Years building' },
 ];
 
 export default function About() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const gradientStyle = {
+  const gradSx = {
     background: isDark
       ? 'linear-gradient(135deg, #818CF8 0%, #22D3EE 100%)'
       : 'linear-gradient(135deg, #6366F1 0%, #0891B2 100%)',
@@ -46,134 +29,82 @@ export default function About() {
     <Box
       component="section"
       id="about"
-      sx={{
-        py: { xs: 12, md: 18 },
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      sx={{ py: { xs: 12, md: 18 }, position: 'relative', overflow: 'hidden' }}
     >
-      {/* Subtle background accent */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '20%',
-          right: '-8%',
-          width: 600,
-          height: 600,
-          borderRadius: '50%',
-          background: isDark
-            ? 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(8,145,178,0.04) 0%, transparent 70%)',
-          filter: 'blur(100px)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Accent orb */}
+      <Box sx={{
+        position: 'absolute', top: '30%', right: '-8%',
+        width: 600, height: 600, borderRadius: '50%',
+        background: isDark
+          ? 'radial-gradient(circle, rgba(34,211,238,0.07) 0%, transparent 70%)'
+          : 'radial-gradient(circle, rgba(8,145,178,0.05) 0%, transparent 70%)',
+        filter: 'blur(100px)', pointerEvents: 'none',
+      }} />
 
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
-        {/* Section label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5 }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 7 }}>
-            <Typography
-              sx={{
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: isDark ? 'rgba(129,140,248,0.7)' : 'rgba(79,70,229,0.7)',
-              }}
-            >
-              About
-            </Typography>
-            <Box sx={{ flex: 1, height: '1px', background: 'divider', bgcolor: 'divider', maxWidth: 60 }} />
-          </Box>
-        </motion.div>
-
-        {/* Main content: 2-col */}
-        <Grid container spacing={{ xs: 6, md: 10 }} alignItems="flex-start">
-          {/* Left: Bio */}
-          <Grid size={{ xs: 12, md: 6 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Grid container spacing={{ xs: 6, md: 10 }} alignItems="center">
+          {/* Left: Profile visual */}
+          <Grid size={{ xs: 12, md: 5 }}>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Typography variant="h2" sx={{ mb: 4, color: 'text.primary' }}>
-                Turning bold ideas into{' '}
-                <Box component="span" sx={gradientStyle}>
-                  real companies.
+              {/* Avatar placeholder */}
+              <Box sx={{ mb: 4, position: 'relative', display: 'inline-block' }}>
+                <Box sx={{
+                  width: { xs: 120, md: 140 },
+                  height: { xs: 120, md: 140 },
+                  borderRadius: '30px',
+                  background: isDark
+                    ? 'linear-gradient(135deg, rgba(129,140,248,0.2), rgba(34,211,238,0.12))'
+                    : 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(8,145,178,0.1))',
+                  border: '1px solid',
+                  borderColor: isDark ? 'rgba(129,140,248,0.2)' : 'rgba(79,70,229,0.15)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Typography sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: '2.5rem', md: '3rem' },
+                    ...gradSx,
+                  }}>
+                    JN
+                  </Typography>
                 </Box>
-              </Typography>
-
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-                <Typography
-                  sx={{ fontSize: '1.0625rem', lineHeight: 1.8, color: 'text.secondary' }}
-                >
-                  I'm Jikar Najmaldin — an entrepreneur who thrives at the intersection of
-                  technology, business, and global opportunity. I don't just build products;
-                  I build ecosystems that empower people to achieve more.
-                </Typography>
-                <Typography
-                  sx={{ fontSize: '1.0625rem', lineHeight: 1.8, color: 'text.secondary' }}
-                >
-                  From connecting businesses worldwide via{' '}
-                  <Box
-                    component="span"
-                    sx={{ color: isDark ? '#A5B4FC' : '#4F46E5', fontWeight: 600 }}
-                  >
-                    Connectly24
-                  </Box>{' '}
-                  to disrupting the Swiss insurance market with{' '}
-                  <Box
-                    component="span"
-                    sx={{ color: isDark ? '#67E8F9' : '#0891B2', fontWeight: 600 }}
-                  >
-                    FinWolf
-                  </Box>
-                  , my mission is always the same: build things that genuinely matter.
-                </Typography>
+                {/* Status dot */}
+                <Box sx={{
+                  position: 'absolute', bottom: 6, right: 6,
+                  width: 16, height: 16, borderRadius: '50%',
+                  background: '#22C55E',
+                  boxShadow: `0 0 0 3px ${isDark ? '#0D0D1A' : '#F7F7F8'}`,
+                }} />
               </Box>
 
-              {/* Quick facts */}
-              <Box
-                sx={{
-                  mt: 5,
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: 2,
-                }}
-              >
-                {FACTS.map((fact) => (
-                  <Box
-                    key={fact.label}
-                    sx={{
-                      p: 2.5,
-                      borderRadius: 2.5,
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: '0.6875rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase',
-                        color: 'text.secondary',
-                        mb: 0.75,
-                        opacity: 0.7,
-                      }}
-                    >
-                      {fact.label}
+              <Typography variant="h3" sx={{ color: 'text.primary', mb: 0.75, fontWeight: 800 }}>
+                Jikar Najmaldin
+              </Typography>
+              <Typography sx={{ fontSize: '1rem', color: 'text.secondary', mb: 4 }}>
+                Serial Entrepreneur · Product Strategist · Founder
+              </Typography>
+
+              {/* Stats grid */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1.5 }}>
+                {STATS.map(s => (
+                  <Box key={s.label} sx={{
+                    p: 2.5, borderRadius: '14px',
+                    border: '1px solid', borderColor: 'divider',
+                    background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                  }}>
+                    <Typography sx={{
+                      fontWeight: 800, fontSize: '1.5rem',
+                      letterSpacing: '-0.04em', lineHeight: 1, mb: 0.5,
+                      ...gradSx,
+                    }}>
+                      {s.value}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: 'text.primary', fontSize: '0.9375rem' }}>
-                      {fact.value}
+                    <Typography sx={{ fontSize: '0.78rem', color: 'text.secondary', fontWeight: 500 }}>
+                      {s.label}
                     </Typography>
                   </Box>
                 ))}
@@ -181,74 +112,59 @@ export default function About() {
             </motion.div>
           </Grid>
 
-          {/* Right: Pillars */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {PILLARS.map((pillar, i) => (
-                <motion.div
-                  key={pillar.number}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+          {/* Right: Bio */}
+          <Grid size={{ xs: 12, md: 7 }}>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Typography sx={{
+                fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em',
+                textTransform: 'uppercase', mb: 3, display: 'block',
+                color: isDark ? 'rgba(129,140,248,0.8)' : 'rgba(79,70,229,0.8)',
+              }}>
+                About me
+              </Typography>
+
+              <Typography variant="h2" sx={{ color: 'text.primary', mb: 4 }}>
+                I build platforms that{' '}
+                <Box component="span" sx={gradSx}>connect the world.</Box>
+              </Typography>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                <Typography sx={{ fontSize: '1.0625rem', color: 'text.secondary', lineHeight: 1.8 }}>
+                  I'm a serial entrepreneur with a focus on building scalable digital platforms
+                  that solve real-world problems. Over the past four years, I've launched ventures
+                  across B2B matchmaking and fintech — reaching users across 30+ countries.
+                </Typography>
+                <Typography sx={{ fontSize: '1.0625rem', color: 'text.secondary', lineHeight: 1.8 }}>
+                  Through <Box component="span" sx={{ color: isDark ? '#A5B4FC' : '#4F46E5', fontWeight: 600 }}>Connectly24</Box>, I built a global business matchmaking ecosystem
+                  connecting entrepreneurs, investors, and enterprises. With{' '}
+                  <Box component="span" sx={{ color: isDark ? '#67E8F9' : '#0891B2', fontWeight: 600 }}>FinWolf</Box>,
+                  I disrupted Switzerland's legacy insurance market with a fully digital, transparent platform.
+                </Typography>
+                <Typography sx={{ fontSize: '1.0625rem', color: 'text.secondary', lineHeight: 1.8 }}>
+                  I partner with visionary founders to define product strategy, build and launch
+                  platforms, and scale into new markets — bringing both the technical depth and
+                  business instinct needed to execute.
+                </Typography>
+              </Box>
+
+              {/* CTA */}
+              <Box sx={{ mt: 5 }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForward sx={{ fontSize: '1rem' }} />}
+                  onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  sx={{ px: 4, py: 1.5, fontSize: '0.9375rem' }}
                 >
-                  <Box
-                    sx={{
-                      py: 4,
-                      pl: { xs: 0, md: 2 },
-                      borderBottom: '1px solid',
-                      borderColor: 'divider',
-                      '&:first-of-type': { borderTop: '1px solid', borderTopColor: 'divider' },
-                      display: 'flex',
-                      gap: 3,
-                      alignItems: 'flex-start',
-                      transition: 'all 0.25s ease',
-                      '&:hover': {
-                        pl: { xs: 0, md: 3.5 },
-                        '& .pillar-number': { color: 'primary.main' },
-                      },
-                    }}
-                  >
-                    <Typography
-                      className="pillar-number"
-                      sx={{
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        color: 'text.secondary',
-                        opacity: 0.5,
-                        flexShrink: 0,
-                        mt: 0.5,
-                        fontVariantNumeric: 'tabular-nums',
-                        transition: 'color 0.25s',
-                      }}
-                    >
-                      {pillar.number}
-                    </Typography>
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontWeight: 700,
-                          fontSize: '1rem',
-                          color: 'text.primary',
-                          mb: 1,
-                        }}
-                      >
-                        {pillar.title}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: '0.9375rem',
-                          color: 'text.secondary',
-                          lineHeight: 1.7,
-                        }}
-                      >
-                        {pillar.desc}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </motion.div>
-              ))}
-            </Box>
+                  Work with me
+                </Button>
+              </Box>
+            </motion.div>
           </Grid>
         </Grid>
       </Container>

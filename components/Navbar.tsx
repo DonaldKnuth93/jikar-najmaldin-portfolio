@@ -2,35 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  Box,
-  Button,
-  IconButton,
-  Container,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
+  AppBar, Toolbar, Box, Button, IconButton,
+  Container, Drawer, List, ListItem, ListItemButton,
+  ListItemText, Typography, Tooltip, Slide,
   useScrollTrigger,
-  Slide,
-  Typography,
-  Tooltip,
 } from '@mui/material';
 import { Menu as MenuIcon, Close as CloseIcon, LightMode, DarkMode } from '@mui/icons-material';
 import { useColorMode } from './ThemeRegistry';
 import { motion } from 'framer-motion';
 
-const navLinks = [
+const NAV_LINKS = [
+  { label: 'Services', href: '#services' },
+  { label: 'Work', href: '#work' },
   { label: 'About', href: '#about' },
-  { label: 'Ventures', href: '#ventures' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Testimonials', href: '#testimonials' },
 ];
 
 function HideOnScroll({ children }: { children: React.ReactElement }) {
-  const trigger = useScrollTrigger({ threshold: 100 });
+  const trigger = useScrollTrigger({ threshold: 120 });
   return <Slide appear={false} direction="down" in={!trigger}>{children}</Slide>;
 }
 
@@ -38,17 +27,17 @@ export default function Navbar() {
   const { mode, toggleColorMode } = useColorMode();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isDark = mode === 'dark';
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  const handleNav = (href: string) => {
     setDrawerOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -58,54 +47,34 @@ export default function Navbar() {
           elevation={0}
           sx={{
             background: scrolled
-              ? mode === 'dark'
-                ? 'rgba(5, 5, 8, 0.85)'
-                : 'rgba(248, 250, 252, 0.85)'
+              ? isDark ? 'rgba(4,4,10,0.88)' : 'rgba(247,247,248,0.88)'
               : 'transparent',
-            backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+            backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
             borderBottom: scrolled
-              ? mode === 'dark'
-                ? '1px solid rgba(255,255,255,0.06)'
-                : '1px solid rgba(0,0,0,0.06)'
+              ? `1px solid ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)'}`
               : '1px solid transparent',
             transition: 'all 0.3s ease',
           }}
         >
-          <Container maxWidth="xl">
-            <Toolbar disableGutters sx={{ height: 70, justifyContent: 'space-between' }}>
+          <Container maxWidth="lg">
+            <Toolbar disableGutters sx={{ height: 68, justifyContent: 'space-between' }}>
               {/* Logo */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-              >
+              <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                 <Box
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1 }}
+                  sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1.25 }}
                 >
-                  <Box
-                    sx={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: '10px',
-                      background: 'linear-gradient(135deg, #818CF8, #22D3EE)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: '#fff' }}>
-                      JN
-                    </Typography>
+                  <Box sx={{
+                    width: 32, height: 32, borderRadius: '9px',
+                    background: 'linear-gradient(135deg, #818CF8, #22D3EE)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <Typography sx={{ fontWeight: 800, fontSize: '0.8rem', color: '#fff' }}>JN</Typography>
                   </Box>
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: '1rem',
-                      display: { xs: 'none', sm: 'block' },
-                      color: 'text.primary',
-                    }}
-                  >
+                  <Typography sx={{
+                    fontWeight: 700, fontSize: '0.9375rem', color: 'text.primary',
+                    display: { xs: 'none', sm: 'block' },
+                  }}>
                     Jikar Najmaldin
                   </Typography>
                 </Box>
@@ -113,24 +82,19 @@ export default function Navbar() {
 
               {/* Desktop nav */}
               <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 0.5 }}>
-                {navLinks.map((link, i) => (
+                {NAV_LINKS.map((link, i) => (
                   <motion.div
                     key={link.label}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.08 }}
+                    transition={{ duration: 0.4, delay: i * 0.07 }}
                   >
                     <Button
-                      onClick={() => handleNavClick(link.href)}
+                      onClick={() => handleNav(link.href)}
                       sx={{
-                        color: 'text.secondary',
-                        fontWeight: 500,
-                        fontSize: '0.875rem',
-                        px: 2,
-                        '&:hover': {
-                          color: 'primary.main',
-                          background: 'transparent',
-                        },
+                        color: 'text.secondary', fontWeight: 500, fontSize: '0.875rem',
+                        px: 2, py: 1,
+                        '&:hover': { color: 'text.primary', background: 'transparent' },
                         transition: 'color 0.2s',
                       }}
                     >
@@ -139,41 +103,43 @@ export default function Navbar() {
                   </motion.div>
                 ))}
 
-                <Tooltip title={mode === 'dark' ? 'Light mode' : 'Dark mode'}>
+                <Tooltip title={isDark ? 'Light mode' : 'Dark mode'}>
                   <IconButton
                     onClick={toggleColorMode}
                     size="small"
                     sx={{
-                      ml: 1,
-                      color: 'text.secondary',
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      borderRadius: '10px',
-                      p: '6px',
-                      '&:hover': { color: 'primary.main', borderColor: 'primary.main' },
+                      ml: 1, color: 'text.secondary',
+                      border: '1px solid', borderColor: 'divider', borderRadius: '9px', p: '6px',
+                      '&:hover': { color: 'text.primary', borderColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' },
                       transition: 'all 0.2s',
                     }}
                   >
-                    {mode === 'dark' ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
+                    {isDark ? <LightMode sx={{ fontSize: '1rem' }} /> : <DarkMode sx={{ fontSize: '1rem' }} />}
                   </IconButton>
                 </Tooltip>
 
                 <Button
                   variant="contained"
-                  color="primary"
-                  onClick={() => handleNavClick('#contact')}
-                  sx={{ ml: 2, fontSize: '0.875rem' }}
+                  onClick={() => handleNav('#contact')}
+                  sx={{ ml: 2, fontSize: '0.875rem', py: 1 }}
                 >
                   Get in touch
                 </Button>
               </Box>
 
               {/* Mobile */}
-              <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
-                <IconButton onClick={toggleColorMode} size="small" sx={{ color: 'text.secondary' }}>
-                  {mode === 'dark' ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
+              <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5 }}>
+                <IconButton
+                  onClick={toggleColorMode}
+                  size="small"
+                  sx={{
+                    color: 'text.secondary',
+                    border: '1px solid', borderColor: 'divider', borderRadius: '9px', p: '6px',
+                  }}
+                >
+                  {isDark ? <LightMode sx={{ fontSize: '1rem' }} /> : <DarkMode sx={{ fontSize: '1rem' }} />}
                 </IconButton>
-                <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: 'text.primary' }}>
+                <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: 'text.primary', ml: 0.5 }}>
                   <MenuIcon />
                 </IconButton>
               </Box>
@@ -182,46 +148,60 @@ export default function Navbar() {
         </AppBar>
       </HideOnScroll>
 
+      {/* Mobile drawer */}
       <Drawer
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         PaperProps={{
           sx: {
-            width: 280,
-            background: mode === 'dark' ? '#0D0D16' : '#FFFFFF',
+            width: 290,
+            background: isDark ? '#0D0D1A' : '#FFFFFF',
+            borderLeft: '1px solid',
+            borderColor: 'divider',
             p: 3,
           },
         }}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-          <Typography fontWeight={700} fontSize="1.1rem">
-            Menu
-          </Typography>
-          <IconButton onClick={() => setDrawerOpen(false)}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={5}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+            <Box sx={{
+              width: 28, height: 28, borderRadius: '8px',
+              background: 'linear-gradient(135deg, #818CF8, #22D3EE)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Typography sx={{ fontWeight: 800, fontSize: '0.7rem', color: '#fff' }}>JN</Typography>
+            </Box>
+            <Typography fontWeight={700} fontSize="0.9375rem">Jikar Najmaldin</Typography>
+          </Box>
+          <IconButton onClick={() => setDrawerOpen(false)} sx={{ color: 'text.secondary' }}>
             <CloseIcon />
           </IconButton>
         </Box>
-        <List>
-          {navLinks.map((link) => (
+
+        <List sx={{ p: 0 }}>
+          {NAV_LINKS.map(link => (
             <ListItem key={link.label} disablePadding>
               <ListItemButton
-                onClick={() => handleNavClick(link.href)}
-                sx={{ borderRadius: 2, mb: 1 }}
+                onClick={() => handleNav(link.href)}
+                sx={{ borderRadius: '10px', mb: 0.5, py: 1.5 }}
               >
                 <ListItemText
                   primary={link.label}
-                  primaryTypographyProps={{ fontWeight: 600, fontSize: '1.1rem' }}
+                  primaryTypographyProps={{ fontWeight: 600, fontSize: '1rem' }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Box mt="auto" pt={4}>
+
+        <Box mt="auto" pt={5}>
           <Button
             variant="contained"
             fullWidth
-            onClick={() => handleNavClick('#contact')}
+            size="large"
+            onClick={() => handleNav('#contact')}
+            sx={{ py: 1.5 }}
           >
             Get in touch
           </Button>
