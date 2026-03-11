@@ -23,6 +23,7 @@ export const useColorMode = () => useContext(ColorModeContext);
 function EmotionCacheProvider({ children }: { children: React.ReactNode }) {
   const [{ cache, flush }] = useState(() => {
     const cache = createCache({ key: 'mui-style', prepend: true });
+    cache.compat = true; // prevents inline <style> injection during SSR (fixes hydration mismatch)
     const prevInsert = cache.insert.bind(cache);
     let inserted: string[] = [];
     cache.insert = (...args) => {
