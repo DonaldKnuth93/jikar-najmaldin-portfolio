@@ -1,8 +1,11 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useRef } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { useServerInsertedHTML } from 'next/navigation';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 import { getDarkTheme, getLightTheme } from '@/theme/theme';
 
 interface ColorModeContextType {
@@ -16,6 +19,46 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 });
 
 export const useColorMode = () => useContext(ColorModeContext);
+
+function EmotionCacheProvider({ children }: { children: React.ReactNode }) {
+  const [{ cache, flush }] = useState(() => {
+    const cache = createCache({ key: 'mui-style', prepend: true });
+    cache.compat = true;
+    const prevInsert = cache.insert.bind(cache);
+    let inserted: string[] = [];
+    cache.insert = (...args) => {
+      const serialized = args[1];
+      if (cache.inserted[serialized.name] === undefined) {
+        inserted.push(serialized.name);
+      }
+      return prevInsert(...args);
+    };
+    const flush = () => {
+      const prevInserted = inserted;
+      inserted = [];
+      return prevInserted;
+    };
+    return { cache, flush };
+  });
+
+  useServerInsertedHTML(() => {
+    const names = flush();
+    if (names.length === 0) return null;
+    let styles = '';
+    for (const name of names) {
+      styles += cache.inserted[name];
+    }
+    return (
+      <style
+        key={cache.key}
+        data-emotion={`${cache.key} ${names.join(' ')}`}
+        dangerouslySetInnerHTML={{ __html: styles }}
+      />
+    );
+  });
+
+  return <CacheProvider value={cache}>{children}</CacheProvider>;
+}
 
 export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState<'dark' | 'light'>('dark');
@@ -48,23 +91,14 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
 
   const theme = useMemo(() => (mode === 'dark' ? getDarkTheme() : getLightTheme()), [mode]);
 
-  if (!mounted) {
-    return (
-      <div style={{ visibility: 'hidden' }}>
-        <ThemeProvider theme={getDarkTheme()}>
+  return (
+    <EmotionCacheProvider>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           {children}
         </ThemeProvider>
-      </div>
-    );
-  }
-
-  return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+      </ColorModeContext.Provider>
+    </EmotionCacheProvider>
   );
 }
